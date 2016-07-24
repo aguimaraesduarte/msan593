@@ -1,0 +1,516 @@
+---
+title: "MSAN 593 - Homework 1"
+author: "Andre Guimaraes Duarte"
+date: "July 17, 2016"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+options(width = 75)
+```
+
+<!-- Reset R session -->
+`r rm(list=ls())`
+`r cat("\014")`
+
+# Question 1
+
+##### 1
+First, let's create and populate a few vectors that will be useful for this question. These vectors relate to the courses that I am taking this summer at USF.
+```{r courseNum}
+courseNum <- c(501, 502, 504, 593)
+courseName <- c("Computation for Analytics",
+                 "Review of Linear Algebra",
+                 "Review of Probability and Statistics",
+                 "Exploratory Data Analysis")
+courseProf <- c("Terence Parr","David Uminski", "Jeff Hamrick", "Paul Intrevado")
+enrolled <- c(T, T, F, T)
+anticipatedGrade <- c("A+", "A-", NA, "A")
+anticipatedHours <- c(15, 25, NA, 25)
+```
+
+From these entries, we can see that I am **not** enrolled in MSAN`r courseNum[3]`: `r courseName[3]` with `r courseProf[3]`.
+
+Further information about these vectors (their `type` and `class`) are shown in the table below.
+
+|      **vector**      | **type** | **class** |
+|:----------------|:----|:-----|
+| courseNum        |   `r typeof(courseNum)`   |  `r class(courseNum)`     |
+| courseName       |   `r typeof(courseName)`   |   `r class(courseName)`    |
+| courseProf       |   `r typeof(courseProf)`   |   `r class(courseProf)`    |
+| enrolled         |   `r typeof(enrolled)`   |   `r class(enrolled)`    |
+| anticipatedGrade |   `r typeof(anticipatedGrade)`   |   `r class(anticipatedGrade)`    |
+| anticipatedHours |   `r typeof(anticipatedHours)`   |   `r class(anticipatedHours)`    |
+
+Table:  Summary of the `type` and `class` for each vector. \label{coursesSummary}
+
+We can see from table \ref{coursesSummary} that, for example, `courseNum` has `type` ``r typeof(courseNum)`` and its `class` is ``r class(courseNum)``.
+
+##### 2
+Now, let's create a data frame called `bootcampDataFrame` by combining all the above vectors. When creating this data frame, it is important to remember to set the flag `stringsAsFactors` to `FALSE` (or `F`), so that strings are not converted into factors. We also call the function `str` on our data frame to give us a quick overview of its contents. `str` stand for _structure_. Note: the output of `str` can often be long, and run off the printable page, hence the inclusion of the flag `strict.width` to `"w"` --or `"wrap"`-- so the results wrap around the default (or specified) `width` of the printable space.
+```{r createDataFrame}
+bootcampDataFrame <- data.frame(courseNum = courseNum,
+                                courseName = courseName,
+                                courseProf = courseProf,
+                                enrolled = enrolled,
+                                anticipatedGrade = anticipatedGrade,
+                                anticipatedHours = anticipatedHours,
+                                stringsAsFactors = F)
+str(bootcampDataFrame, strict.width = "w")
+```
+
+The table below summarizes the `type` and `class` for the data frame.
+
+|      **vector**      | **type** | **class** |
+|:----------------|:----|:-----|
+| courseNum        |   `r typeof(bootcampDataFrame$courseNum)`   |  `r class(bootcampDataFrame$courseNum)`     |
+| courseName       |   `r typeof(bootcampDataFrame$courseName)`   |   `r class(bootcampDataFrame$courseName)`    |
+| courseProf       |   `r typeof(bootcampDataFrame$courseProf)`   |   `r class(bootcampDataFrame$courseProf)`    |
+| enrolled         |   `r typeof(bootcampDataFrame$enrolled)`   |   `r class(bootcampDataFrame$enrolled)`    |
+| anticipatedGrade |   `r typeof(bootcampDataFrame$anticipatedGrade)`   |   `r class(bootcampDataFrame$anticipatedGrade)`    |
+| anticipatedHours |   `r typeof(bootcampDataFrame$anticipatedHours)`   |   `r class(bootcampDataFrame$anticipatedHours)`    |
+
+Table:  Summary of the `type` and `class` for the data frame variables. \label{bootcampDFTable}
+
+We can see from table \ref{bootcampDFTable} that, here, all the variables retain their original types and classes.
+
+##### 3
+Let's combine the vectors from the beggining of this exercise in a single list called `bootcampDataList`. As previously, it is also good practice to show the structure of the created list.
+```{r bootcampDataList}
+bootcampDataList <- list(courseNum,
+                         courseName,
+                         courseProf,
+                         enrolled,
+                         anticipatedGrade,
+                         anticipatedHours)
+str(bootcampDataList, strict.width = "w")
+```
+
+Now each vector is an element of this list. One notable difference to the data frame that we can see from this output is that the vectors are not named. We can name each of them by its original vector's name, so it's easier to understand what each element represents.
+```{r namesBootcampDataList}
+names(bootcampDataList) <- c("courseNum",
+                             "courseName",
+                             "courseProf",
+                             "enrolled",
+                             "anticipatedGrade",
+                             "anticipatedHours")
+str(bootcampDataList, strict.width = "w")
+```
+
+As we can see, now the data list has proper names for our vectors.
+
+The table below summarizes the `type` and `class` for the data list
+
+|      **vector**      | **type** | **class** |
+|:----------------|:----|:-----|
+| courseNum        |   `r typeof(bootcampDataList$courseNum)`   |  `r class(bootcampDataList$courseNum)`     |
+| courseName       |   `r typeof(bootcampDataList$courseName)`   |   `r class(bootcampDataList$courseName)`    |
+| courseProf       |   `r typeof(bootcampDataList$courseProf)`   |   `r class(bootcampDataList$courseProf)`    |
+| enrolled         |   `r typeof(bootcampDataList$enrolled)`   |   `r class(bootcampDataList$enrolled)`    |
+| anticipatedGrade |   `r typeof(bootcampDataList$anticipatedGrade)`   |   `r class(bootcampDataList$anticipatedGrade)`    |
+| anticipatedHours |   `r typeof(bootcampDataList$anticipatedHours)`   |   `r class(bootcampDataList$anticipatedHours)`    |
+
+Table:  Summary of the `type` and `class` for the data list elements. \label{bootcampDLTable}
+
+We can see from table \ref{bootcampDLTable} that the variables all retain their original types and classes.
+
+##### 4
+- In order to get the course numbers in `courseNum` except the fourth one, we can use the following code:
+```{r courseNum123}
+courseNum[c(1,2,3)]
+```
+There are many other ways to get this result, but this one is simple and concise.
+
+- The total number of hours I anticipate spending on coursework each week is found using a simple `sum`. __Note__: it is important to remember to include the flag `na.rm = T` in order to not consider `NA` values (or else the return value would be `NA`): 
+```{r totalHoursCoursework}
+sum(anticipatedHours, na.rm = T) # per week
+sum(anticipatedHours, na.rm = T) * 5 # over all of boot camp
+```
+
+I anticipate spending `r sum(anticipatedHours, na.rm = T)` hours on coursework per week, and `r sum(anticipatedHours, na.rm = T) * 5` hours throughout all of boot camp. That's quite a bit!
+
+- In order to get only the third row and the first two columns of `bootcampDataFrame`, we use the following code:
+```{r thirdRowFirstTwoColumns}
+bootcampDataFrame[3, c(1,2)]
+```
+We can see it returns  ``r names(bootcampDataFrame)[1]`` and ``r names(bootcampDataFrame)[2]`` of the third course (``r bootcampDataFrame[3,2]``)
+
+- The first value in the second element of `bootcampDataList` can be obtained by running the following code:
+```{r firstValueSecondElement}
+bootcampDataList[[2]][1]
+```
+It is, in fact, ``r names(bootcampDataList)[2]`` of the first course (``r bootcampDataList[[2]][1]``). Note that we had to use double square brackets `[[2]]` to access the second element in the list.
+
+##### 5
+Since we haven't done it before, let's convert the `anticipatedGrade` variable in `bootcampDataFrame` into an ordinal factor (not forgetting to set the flag `ordered = T`):
+```{r ordinalDataFrame}
+bootcampDataFrame$anticipatedGrade <- factor(anticipatedGrade,
+                                             levels = c("F", "C-", "C", "C+", "B-", "B",
+                                             "B+", "A-", "A", "A+"), ordered = T)
+```
+Note: there is no problem in defining more `levels` than there are grades in our data frame. It is actually better, since we can afterwards add new anticipated grades in the data frame, and we won't have to update the `factor` `levels`. It is a precaution that can come in handy.
+
+We can check that it has in fact been altered by printing the `structure` of `anticipatedGrade` by using the function `str`:
+```{r checkOrdinalDataFrame}
+str(bootcampDataFrame$anticipatedGrade)
+```
+Now, `anticipatedGrade` has `r nlevels(bootcampDataFrame$anticipatedGrade)` levels, ranging from `r levels(bootcampDataFrame$anticipatedGrade)[1]` to `r tail(levels(bootcampDataFrame$anticipatedGrade), n = 1)`.
+
+- The maximum letter grade I anticipate receiving in boot camp is easily retrieved by using the `max` function (since the `levels` are ordered), as shown below: 
+```{r maximumLetterGrade}
+max(bootcampDataFrame$anticipatedGrade, na.rm = T)
+```
+
+The name and course number of this class is found and printed via the code:
+```{r nameAndCourseNumber}
+paste("MSAN",
+      bootcampDataFrame$courseNum[which(bootcampDataFrame$anticipatedGrade == 
+                                          max(bootcampDataFrame$anticipatedGrade,
+                                              na.rm = T))],
+      ":",
+      bootcampDataFrame$courseName[which(bootcampDataFrame$anticipatedGrade ==
+                                           max(bootcampDataFrame$anticipatedGrade,
+                                               na.rm = T))])
+```
+Therefore, the course in which I anticipate getting an `r max(bootcampDataFrame$anticipatedGrade, na.rm = T)` is `r paste("MSAN", bootcampDataFrame$courseNum[which(bootcampDataFrame$anticipatedGrade == max(bootcampDataFrame$anticipatedGrade, na.rm = T))], ":", bootcampDataFrame$courseName[which(bootcampDataFrame$anticipatedGrade == max(bootcampDataFrame$anticipatedGrade, na.rm = T))])`. Hopefully I survive these five weeks and get these anticipated grades in all courses!
+
+***
+\pagebreak
+
+# Question 2
+<!-- Reset R session -->
+`r rm(list=ls())`
+`r cat("\014")`
+
+##### 1
+First, we read the file `titanic.csv` in the current working directory, and store the data in the data frame `titanicData` (and remembering to set the flag `stringsAsFactor` to `FALSE` so that character strings are not considered individual factors). By calling `str` on this data frame, we can get a summary of its contents. 
+```{r readData}
+titanicData <- read.csv("titanic.csv", stringsAsFactors = F)
+str(titanicData, strict.width = "w")
+```
+
+##### 2
+The first line of the output from `str` shows that there are `r nrow(titanicData)` rows in this data frame. This result is also easily obtained by running the command:
+```{r nrowTitanic}
+nrow(titanicData)
+```
+
+##### 3
+The first line of the output from `str` shows that there are `r ncol(titanicData)` columns in this data frame. This result is also easily obtained by running the command:
+
+```{r ncolTitanic}
+ncol(titanicData)
+```
+
+##### 4
+To view how many `NA` entries each variable has, we can print the `summary` of the data frame.
+```{r summary}
+summary(titanicData)
+```
+
+We can see that the variable `Age` is the only one with `NA` entries, and has `r sum(is.na(titanicData$Age))` of them.
+
+##### 5
+From the output of `summary`, we can see that the variable `Survived` was imported as a ``r typeof(titanicData$Survived)``. It would make more sense if it were `logical`, since the passenger either survived or did not. We can make this modification by executing the following code:
+```{r survivedToLogical}
+titanicData$Survived <- as.logical(titanicData$Survived)
+summary(titanicData$Survived)
+```
+We can see that there are `r sum(is.na(titanicData$Survived))` `NA` entries for this variable after this modification.
+
+In addition, other variables should be converted into factors.
+
+- The variable `Embarked`, which denotes the port of embarkation of each passanger, can be converted to a factor, with levels "S", "C", and "Q" denoting the cities "Southampton", "Queenstown", and "Cherbourg". Since the Titanic departed from Southampton, then stopped at Cherbourg then Queenstown, tt can be an interesting idea to order these factors in this fashion.
+
+- The variable `SibSp`, which denotes the number of siblings/spouses aboard the Titanic, can be converted into an ordered factor.
+
+- The variable `Parch` denotes the number of parents/children aboard the ship, and can be converted into an ordered factor.
+
+- The variable `Pclass`, which is the cabin class, can also be converted into an ordered factor.
+
+- The variable `Sex`, the sex of the passenger, can be converted into a factor with levels `male` and `female` (which are the only two values, so we don't need to specifiy the `levels` argument). Note: sexes are **not** ordered! Males and females are **equal**!
+
+```{r embarkedToFactor}
+titanicData$Embarked <- factor(titanicData$Embarked,
+                               levels = c("S", "C", "Q"),
+                               ordered = T)
+titanicData$SibSp <- factor(titanicData$SibSp,
+                            levels = unique(titanicData$SibSp)[
+                                     order(unique(titanicData$SibSp))],
+                            ordered = T)
+titanicData$Parch <- factor(titanicData$Parch,
+                            levels = unique(titanicData$Parch)[
+                                     order(unique(titanicData$Parch))],
+                            ordered = T)
+titanicData$Pclass <- factor(titanicData$Pclass,
+                             levels = unique(titanicData$Pclass)[
+                                      order(unique(titanicData$Pclass))],
+                             ordered = T)
+titanicData$Sex <- factor(titanicData$Sex)
+str(titanicData, strict.width = "w")
+```
+We can see from the `structure` that the classes have been properly updated. Our data frame is better structured now.
+
+##### 6
+- The mean age of survivors is `r round(mean(titanicData$Age, na.rm = T), digits = 2)` years.
+
+- The mean age of those who did not survive is `r round(mean(titanicData$Age[titanicData$Survived == F], na.rm = T), digits = 2)` years.
+
+- To plot side-by-side histograms of the ages of survivors and non-survivors, we use the following code, and generate the subsequent image.
+```{r histograms, fig.cap="Histograms of the ages of survivors and non-survivors\\label{fig:histTitanic}"}
+par(mfrow = c(1,2))
+hist(titanicData$Age[titanicData$Survived == T], 
+     xlab = "Age (years)", main = "Histogram of the ages\n of surviors")
+hist(titanicData$Age[titanicData$Survived == F],
+     xlab = "Age (years)", main = "Histogram of the ages\n of non-surviors")
+```
+
+The histograms in figure \ref{fig:histTitanic} show the distribution of ages of the people who survived and those who did not survive the sinking of the ship. It can be seen that the histogram for the survivors is slightly more dense on the left (toward younger ages) than the histogram for the non-survivors: there are more young people proportionally to the total among the survivors than the non-survivors.
+
+##### 7
+The first 10 values of the `Cabin` variable are shown below.
+```{r cabin10}
+titanicData$Cabin[1:10]
+```
+
+We can see that many are blank. Let's write a script that replaces all blanks in the **entire** data frame `titanicData` with `NA`s.
+```{r blanksScript}
+# for every variable
+for(i in 1:ncol(titanicData)){
+  # for every value of the variable
+  for(j in 1:nrow(titanicData)){
+    # if the value is not NA and is a blank
+    if(!is.na(titanicData[[i]][j]) & titanicData[[i]][j] == ""){
+      # replace the value with NA
+      titanicData[[i]][j] <- NA
+    }
+  }
+}
+```
+
+We can see that now the variable `Cabin` has `r sum(is.na(titanicData$Cabin))` `NA`s, making it the one with the most `NA`s:
+
+```{r cabinNA}
+sum(is.na(titanicData$Cabin))
+```
+
+
+##### 8
+Around `r round(sum(is.na(titanicData$Age))/nrow(titanicData) * 100, digits = 2)`% of the observations for `Age` are `NA`s, which is almost one in five. We can replace all of them with the mean age with the following line of code:
+```{r imputation}
+titanicData$Age[is.na(titanicData$Age)] <- mean(titanicData$Age, na.rm = T)
+summary(titanicData$Age)
+```
+
+By comparison the output of `summary` to the one shown in sub-question 4, we can see that the minimum, maximum, and mean have not changed (and nor should they have, since we only introduced values equal to the mean!). However, the median is now the same as the mean (`r round(mean(titanicData$Age, na.rm = T), digits = 2)`), while the first and third quantiles have been brought nearer to this value.
+
+This technique is called _imputation_, and more specifically _mean_ imputation. While this method does not introduce too much bias in a distribution that is normally distributed, it can have serious drawbacks if the original distribution is skewed. Indeed, let's say that a variable is skewed towards higher values. By implementing mean imputation, the histogram of the values for the variable will shift towards the mean, which is not realistic considering the original distribution. Other imputation methods (median, Hotdeck, ...) can lead to more likely results.
+
+***
+\pagebreak
+
+# Question 3
+<!-- Reset R session -->
+`r rm(list=ls())`
+`r cat("\014")`
+
+##### 1
+- In order to generate a random sample of `n = 100` random variable $\sim \mathcal{U} \{-1, 1\}$, we use the following code. Note: it is good practice to save variables (in this case `a` and `b`), so that, if you need to change their values at one point, you only need to do it in one place, and the changes are automatically reflected in the rest of the script.
+```{r 100Uniform}
+a <- -1
+b <- 1
+u100 <- runif(100, a, b)
+(u100_mean <- mean(u100))
+(u100_var <- var(u100))
+```
+
+We can see that the mean of this sample is $`r round(u100_mean, digits = 4)`$, and the variance is $`r round(u100_var, digits = 4)`$.
+
+- We can repeat the previous code for sample sizes of 1,000, 10,000, 100,000, and 1,000,000. In order to do so, we can use a `for` loop. We store our samples in a vector `runifSamples`, the means in `runifMeans`, and the variances in `runifVars`. Note: `runifSamples` is a `list`, since it will contain separate vectors. To access one of its elements, we will need to use double square brackets (for example: `[[1]]` to access the first element in the list).
+```{r otherUniform}
+# initialize the vectors
+runifSamples <- list()
+runifMeans <- vector()
+runifVars <- vector()
+
+# add the previous results
+runifSamples[[1]] <- u100
+runifMeans[1] <- u100_mean
+runifVars[1] <- u100_var
+
+# populate the vectors
+i <- 2 # 1 is already taken by u100!
+for(n in c(1000, 10000, 100000, 1000000)){
+  runifSamples[[i]] <- runif(n, a, b)
+  runifMeans[i] <- mean(runifSamples[[i]])
+  runifVars[i] <- var(runifSamples[[i]])
+  i <- i + 1 # don't forget to increment i
+}
+```
+
+|      **n**      | **mean** | **variance** |
+|:----------------|:----|:-----|
+| 100        |   $`r runifMeans[1]`$   |  $`r runifVars[1]`$     |
+| 1,000       |   $`r runifMeans[2]`$   |   $`r runifVars[2]`$    |
+| 10,000       |   $`r runifMeans[3]`$   |   $`r runifVars[3]`$    |
+| 100,000         |   $`r runifMeans[4]`$   |   $`r runifVars[4]`$    |
+| 1,000,000 |   $`r runifMeans[5]`$   |   $`r runifVars[5]`$    |
+
+Table: summary of means and variances for random samples of size `n` from $\mathcal{U} \{-1, 1\}$. \label{runif}
+
+We can see from table \ref{runif} that, as `n` gets larger and larger, the mean and variance both tend to their respective theoretical values of $\frac{a + b}{2}$ = `r (a+b)/2` and $\frac{(b - a)^2}{12}$ = `r ((b-a)**2)/12`.
+
+- Now, let's create a data frame called `unifDataFrame` with seven variables: `sampleSize`, `theoreticalMean`, `sampleMean`, `deltaMean`, `theoreticalVariance`, `sampleVariance`, `deltaVariance`, where `deltaMean` and `deltaVariance` are the differences between the sample and theoretical mean and variances respectively for each sample size.
+
+First, let's create a vector with our desired sample sizes, and call it `sampleSize`:
+```{r sampleSize}
+sampleSize <- vector()
+for(i in 1:length(runifSamples)){
+  sampleSize[i] <- length(runifSamples[[i]])
+}
+```
+
+
+Now, let's create vectors `theoreticalMean` and `theoreticalVariance`. They have the same length as `sampleSize`, and contain repetitions of `r (a+b)/2` and `r ((b-a)**2)/12` respectively. We can use the built-in function `rep` to achieve this:
+```{r theoreticalMeanAndVariance}
+theoreticalMean <- rep((a+b)/2, length(sampleSize))
+theoreticalVariance <- rep(((b-a)**2)/12, length(sampleSize))
+```
+
+Now, let's create the vectors `sampleMean` and `sampleVariance`:
+```{r sampleMeanAndVariance}
+sampleMean <- runifMeans
+sampleVariance <- runifVars
+```
+
+Let's now create our last two vectors, `deltaMean` and `deltaVariance`:
+```{r deltaMeanAndVariance}
+deltaMean <- abs(sampleMean - theoreticalMean)
+deltaVariance <- abs(sampleVariance - theoreticalVariance)
+```
+
+Finally, we can combine all these vectors into our data frame:
+```{r dataframe}
+unifDataFrame <- data.frame(sampleSize = sampleSize,
+                            theoreticalMean = theoreticalMean,
+                            sampleMean = sampleMean,
+                            deltaMean = deltaMean,
+                            theoreticalVariance = theoreticalVariance,
+                            sampleVariance = sampleVariance,
+                            deltaVariance = deltaVariance)
+str(unifDataFrame, strict.width = "w")
+```
+
+Calling `str` on our data frame allows to quickly visualize the contents. More specifically, we can see that both `deltaMean` and `deltaVariance` become increasingly small as `n` grows large.
+
+- An easy way to evaluate the effect of the sample size on the precision of the mean is to plot `deltaMean` as a function of `sampleSize`. Since we are increasing the sample size `n` by factors of 10, it makes sense to use a logarithmic scale for the x axis.
+```{r plotDeltaMean, fig.cap="Effect of sample size on the difference between theoretical mean and sample mean for a uniform distribution between -1 and 1\\label{fig:deltaMean}"}
+plot(deltaMean ~ sampleSize, log = "x", 
+     main = "Impact of the sample size on the delta mean",
+     ylab = "Delta mean", xlab = "Sample size")
+```
+
+- As previously, a similar plot can be constructed for `deltaVariance`.
+```{r plotDeltaVariance, fig.cap="Effect of sample size on the difference between theoretical variance and sample variance for a uniform distribution between -1 and 1\\label{fig:deltaVar}"}
+plot(deltaVariance ~ sampleSize, log = "x",
+     main = "Impact of the sample size on the delta variance",
+     ylab = "Delta variance", xlab = "Sample size")
+```
+
+The two plots, shown in figures \ref{fig:deltaMean} and \ref{fig:deltaVar}, show that, as the sample size increases, the difference between the theoretical mean (respectively variance) and the sample mean (respectively variance) tends to zero. The larger the sample size, the more accurate the sample mean and variance are.
+
+##### 2
+Let's create a vector `myRunifVec` containng 10,000,000 random variables $\sim \mathcal{U} \{0, 1\}$.
+```{r myRunifVec}
+a <- 0
+b <- 1
+myRunifVec <- runif(10000000, a, b)
+```
+
+
+Now, we randomly sample 100,000 values from this vector a draw the corresponding histogram. The flag `freq` is set to `FALSE` in order to plot the histogram with densities instead of frequencies. 
+```{r histogram, fig.cap="Histogram of 100,000 values randomly sampled from a uniform distirbution from 0 to 1\\label{fig:histUnif}"}
+hist(sample(myRunifVec, 100000), freq = F,
+     main = "Distirbution of 100,000 uniformely distributed random variables",
+     xlab = expression(u%~%U(0,1)), ylab = "Density")
+```
+
+The histogram in figure \ref{fig:histUnif} corresponds to the distribution of a random variable that follows a uniform distribution from 0 to 1. When randomly sampling from a $\mathcal{U} \{a, b\}$ distribution, the sample is also $\sim \mathcal{U} \{a, b\}$.
+
+##### 3
+Now, let's create a data frame `myRunifDataFrame` containing three columns:
+
+- the first two, `col1` and `col2`, contain two separate samples of 10,000,000 random variables samples from a $\sim \mathcal{U} \{0, 1\}$ distribution.
+
+- the third, `runifSum`, contains the sum of `col1` and `col2`. We also call `str` on the data frame to make sure everything was created correctly.
+```{r myRunifDataFrame}
+col1 <- runif(10000000, 0, 1)
+col2 <- runif(10000000, 0, 1)
+runifSum <- col1 + col2
+myRunifDataFrame <- data.frame(col1 = col1,
+                               col2 = col2,
+                               runifSum = runifSum)
+str(myRunifDataFrame, strict.width = "w")
+```
+
+Now, let's create a histogram from the values in `runifSum`, which we call from `myRunifDataFrame` using the `$` symbol.
+```{r histConvolution, fig.cap="Convolution histogram for the sum of two uniformely distributed random variables ~U(0, 1)\\label{fig:convUnif}"}
+hist(myRunifDataFrame$runifSum, freq = F,
+     main = "Convolution histogram for the sum of two
+     uniform random variables", xlab = expression(u[1] + u[2]), 
+     ylab = "Density", ylim = c(0, 1))
+```
+
+We can immediately see, in figure \ref{fig:convUnif}, that the shape of this histogram is not similar to what we would expect from a uniform distribution. The act of adding several independent random variables is called a _convolution_. In this case, with random variables from a uniform distribution, it is called the *Irwin-Hall distribution*. The triangular shape of this distribution is fairly easy to understand. We are adding random variables that are uniformly distributed from 0 to 1. Therefore, the sum of two of these random variables will be between `0` and `2`, but with a higher probability of it being toward the center (in this case, `1`). In fact, for the sum to be around `0` or `2`, both random variables will have to be close to `0` or `1` respectively. On the other hand, many variations are possible for the sum to be around `1`. Therefore, we get more values around `1` than near the extremities.
+
+##### 4
+Finally, let's repeat the previous exercise, but instead of sampling from a uniform distribution, we will be sampling from an exponential distribution with parameter $\lambda = 1$. 
+```{r myRexpDataFrame}
+col11 <- rexp(10000000, 1)
+col21 <- rexp(10000000, 1)
+rexpSum <- col11 + col21
+myRexpDataFrame <- data.frame(col11 = col11,
+                              col21 = col21,
+                              rexpSum = rexpSum)
+str(myRexpDataFrame, strict.width = "w")
+```
+
+Let's now plot the histogram the convolution (`rexpSum`):
+```{r histConvolutionExp, fig.cap="Convolution histogram for the sum of two uniformely distributed random variables ~Exp(lambda)\\label{fig:convExp}"}
+hist(myRexpDataFrame$rexpSum, freq = F,
+     main = "Convolution histogram for the sum of two
+     random exponential variables with lambda = 1",
+     xlab = expression(Exp[1] + Exp[2]), ylab = "Density",
+     ylim = c(0, 0.4))
+```
+
+The convolution of two independent exponentially distributed random variables results in a Gamma distribution. In the present case, where the two exponentially distributed random variables have the same rate parameter $\lambda = 1$, the resulting convolution distribution, as seen in figure \ref{fig:convExp}, is equivalent to a Gamma distribution with parameter $\alpha = 2$, which is similar to the histogram above. In fact, we can easily plot the Gamma distribution with $\alpha = 2$ on top of the histogram:
+
+```{r plotGamma, fig.cap="Convolution histogram for the sum of two uniformely distributed random variables ~Exp(lambda)\\label{fig:gamma}"}
+hist(myRexpDataFrame$rexpSum, freq = F,
+     main = "Convolution histogram for the sum of two
+     random exponential variables with lambda = 1",
+     xlab = expression(Exp[1] + Exp[2]), ylab = "Density",
+     ylim = c(0, 0.4))
+x <- seq(0,20,0.1)
+y <- dgamma(x, shape = 2)
+lines(y~x, col = "blue", legend(5, 0.3, "Gamma distribution (alpha=2)",
+                                col = "blue", lty = 1, cex = 0.9))
+```
+
+As we can see in figure \ref{fig:gamma}, the histogram closely resembles the theoretical distribution of a Gamma random variable with $\alpha = 2$.
+
+***
+
+
+
+
+
+
+
+
+
+
+
+

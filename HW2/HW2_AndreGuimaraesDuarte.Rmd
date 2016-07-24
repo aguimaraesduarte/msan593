@@ -1,0 +1,198 @@
+---
+title: "MSAN 593 - Homework 2"
+author: "Andre Guimaraes Duarte"
+date: "July 24, 2016"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# TODO: reference histograms in the text
+
+# Question 1
+## 1.1
+### 1.1.1
+```{r myRunifVec, fig.cap="Histogram of 10,000,000 random variables ~ U(4, 6)\\label{runifPop}"}
+times <- 10000000
+myRunifVec <- runif(times, 4, 6)
+hist(myRunifVec,
+     main = paste("Histogram of ", length(myRunifVec), "\n random variables ~ U(4, 6)",
+                  sep = ""), xlab = "x", freq = F)
+```
+
+The histogram in figure \ref{runifPop} is the histogram of a $\sim U(4, 6)$ distribution with `r as.integer(length(myRunifVec))` random variables. 
+
+### 1.1.2
+```{r sampleUnif, fig.cap="Histogram of a sample of 100,000 random elements of a ~U(4, 6) distribution\\label{runifSample}"}
+samples <- 100000
+myRunifSample <- sample(myRunifVec, samples)
+hist(myRunifSample,
+     main = paste("Histogram of ", length(myRunifSample),
+                  "\n random variables sampled from a ~ U(4, 6)",
+                  sep = ""), xlab = "x", freq = F)
+```
+
+The histogram in figure \ref{runifSample} is very similar to the population distribution \ref{runifPop}. Sampling elements from a uniform distribution maintains its original distribution.
+
+### 1.1.3
+```{r runifMean2, fig.cap="Histogram of a sample of 100,000 random means of two elements of a ~U(4, 6) distribution\\label{runif2}"}
+# How to make it more efficient for 100,000??
+n <- 10
+unifSampleMean_2 <- replicate(n, {
+  mean(sample(myRunifVec, 2))
+})
+hist(unifSampleMean_2)
+```
+
+The histogram in figure \ref{runif2} is not similar to the population distribution shown in figure \ref{runifPop}. In fact, we can start to see a bell-shaped distribution in this figure.
+
+### 1.1.4
+```{r runifMean5, fig.cap="Histogram of a sample of 100,000 random means of five elements of a ~U(4, 6) distribution\\label{runif5}"}
+unifSampleMean_5 <- replicate(n, {
+  mean(sample(myRunifVec, 5))
+})
+hist(unifSampleMean_5)
+```
+
+The histogram in figure \ref{runif5} is different from the population distribution in figure \ref{runifPop}. There are more observations around $5$, and less toward the tails.
+
+### 1.1.5
+```{r runifMean10, fig.cap="Histogram of a sample of 100,000 random means of ten elements of a ~U(4, 6) distribution\\label{runif10}"}
+unifSampleMean_10 <- replicate(n, {
+  mean(sample(myRunifVec, 10))
+})
+hist(unifSampleMean_10)
+```
+
+The histogram in figure \ref{runif10} is different from the population distribution in figure \ref{runifPop}. This one is bell-shaped and seems to be symmetrical around the value $5$.
+
+### 1.1.6
+```{r runifMean30, fig.cap="Histogram of a sample of 100,000 random means of thirty elements of a ~U(4, 6) distribution\\label{runif30}"}
+unifSampleMean_30 <- replicate(n, {
+  mean(sample(myRunifVec, 30))
+})
+hist(unifSampleMean_30)
+```
+
+The histogram in figure \ref{runif30} is different from the population distribution in figure \ref{runifPop}. It looks a lot like a normal distribution centered around $5$.
+
+***
+
+## 1.2
+### 1.2.1
+```{r myRexpVec, fig.cap="Histogram of 10,000,000 random variables ~Exp(0.5)\\label{rexpPop}"}
+myRexpVec <- rexp(times, 0.5)
+hist(myRexpVec,
+     main = paste("Histogram of ", length(myRexpVec), "\n random variables ~ Exp(0.5)",
+                  sep = ""), xlab = "x", freq = F)
+```
+
+Figure \ref{rexpPop} shows the histogram of a $\sim Exp(0.5)$ distribution with `r as.integer(length(myRexpVec))` random variables.
+
+### 1.2.2
+```{r sampleExp, fig.cap="Histogram of a sample of 100,000 random elements of a ~Exp(0.5) distribution\\label{rexpSample}"}
+myRexpSample <- sample(myRexpVec, samples)
+hist(myRexpSample,
+     main = paste("Histogram of ", length(myRexpSample),
+                  "\n random variables sampled from a ~ Exp(0.5)",
+                  sep = ""), xlab = "x", freq = F)
+```
+
+The histogram in figure \ref{rexpSample} is very similar to the population distribution \ref{rexpPop}. Sampling elements from a negative exponential distribution maintains its original distribution.
+
+### 1.2.3
+```{r rexpMean2, fig.cap="Histogram of a sample of 100,000 random means of two elements of a ~Exp(0.5) distribution\\label{rexp2}"}
+expSampleMean_2 <- replicate(n, {
+  mean(sample(myRexpVec, 2))
+})
+hist(expSampleMean_2)
+```
+
+Figure \ref{rexp2} shows the histogram is slightly more skewed to the right than the population distribution in figure \ref{rexpPop}. 
+
+### 1.2.4
+```{r rexpMean5, fig.cap="Histogram of a sample of 100,000 random means of five elements of a ~Exp(0.5) distribution\\label{rexp5}"}
+expSampleMean_5 <- replicate(n, {
+  mean(sample(myRexpVec, 5))
+})
+hist(expSampleMean_5)
+```
+
+The histogram when we take the mean of five elements from the original population, shown in figure \ref{rexp5}, shows more skewness to the right than the histogram of the population distribution in figure \ref{rexpPop}.
+
+### 1.2.5
+```{r rexpMean10, fig.cap="Histogram of a sample of 100,000 random means of ten elements of a ~Exp(0.5) distribution\\label{rexp10}"}
+expSampleMean_10 <- replicate(n, {
+  mean(sample(myRexpVec, 10))
+})
+hist(expSampleMean_10)
+```
+
+By averaging ten elements, the histogram in figure \ref{rexp10} is starting to look a lot like a Gamma distribution.
+
+### 1.2.6
+```{r rexpMean30, fig.cap="Histogram of a sample of 100,000 random means of thirty elements of a ~Exp(0.5) distribution\\label{rexp30}"}
+expSampleMean_30 <- replicate(n, {
+  mean(sample(myRexpVec, 30))
+})
+hist(expSampleMean_30)
+```
+
+In figure \ref{rexp30}, we see the histogram when we take the average of 30 elements from the original negative exponential population shown in figure \ref{rexpPop}. The distribution is now very different, and looks like a Gamma distribution.
+
+***
+
+## 1.3
+### 1.3.1
+```{r myBdist, fig.cap="Histogram of 5,000,000 random variables from a ~N(-3, 1) and 5,000,000 random variables from a ~N(3, 1)\\label{bdistPop}"}
+times <- 5000000
+myBdist <- c(rnorm(times, -3, 1), rnorm(times, 3, 1))
+hist(myBdist, main="Bimodal histogram of ~N(-3, 1) and ~N(3, 1)", xlab="x", freq = F)
+```
+
+
+
+
+### 1.3.2
+```{r bdist5, fig.cap="Histogram of a sample of 100,000 random means of five elements from a ~N(-3, 1) and a ~N(3, 1) distributions\\label{bdist5}"}
+myBdist_5 <- replicate(n, {
+  mean(sample(myBdist, 5))
+})
+hist(myBdist_5)
+```
+
+
+
+### 1.3.3
+```{r bdist10, fig.cap="Histogram of a sample of 100,000 random means of ten  elements from a ~N(-3, 1) and a ~N(3, 1) distributions\\label{bdist10}"}
+myBdist_10 <- replicate(n, {
+  mean(sample(myBdist, 10))
+})
+hist(myBdist_10)
+```
+
+```{r bdist20, fig.cap="Histogram of a sample of 100,000 random means of twenty elements from a ~N(-3, 1) and a ~N(3, 1) distributions\\label{bdist20}"}
+myBdist_20 <- replicate(n, {
+  mean(sample(myBdist, 20))
+})
+hist(myBdist_20)
+```
+
+```{r bdist30, fig.cap="Histogram of a sample of 100,000 random means of thirty elements from a ~N(-3, 1) and a ~N(3, 1) distributions\\label{bdist30}"}
+myBdist_30 <- replicate(n, {
+  mean(sample(myBdist, 30))
+})
+hist(myBdist_30)
+```
+
+### 1.3.4
+
+
+
+
+
+
+
+
