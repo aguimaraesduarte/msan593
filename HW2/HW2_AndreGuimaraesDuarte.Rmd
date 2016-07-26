@@ -9,10 +9,14 @@ output: pdf_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+<!-- Reset R session -->
+`r rm(list=ls())`
+`r cat("\014")`
+
 # Question 1
 ## 1.1
 ### 1.1.1
-```{r myRunifVec, fig.cap="Histogram of 10,000,000 random variables ~ U(4, 6)\\label{runifPop}"}
+```{r myRunifVec, fig.cap="Histogram of 10,000,000 random variables ~ U(4, 6)\\label{runifPop}", cache=T}
 myRunifVec <- runif(10000000, 4, 6)
 hist(myRunifVec,
      main = paste("Histogram of ", length(myRunifVec), "\n random variables ~ U(4, 6)",
@@ -22,7 +26,7 @@ hist(myRunifVec,
 The histogram in figure \ref{runifPop} is the histogram of a $\sim U(4, 6)$ distribution with `r as.integer(length(myRunifVec))` random variables. 
 
 ### 1.1.2
-```{r sampleUnif, fig.cap="Histogram of a sample of 100,000 random elements from a ~U(4, 6) distribution\\label{runifSample}"}
+```{r sampleUnif, fig.cap="Histogram of a sample of 100,000 random elements from a ~U(4, 6) distribution\\label{runifSample}", cache=T}
 samples <- 100000
 myRunifSample <- sample(myRunifVec, 100000)
 hist(myRunifSample,
@@ -40,7 +44,7 @@ First, I define a data frame called `myRunifDataFrame` that has 30 columns. Each
 
 Then, I define a second data frame, called `myRunifMeans` that contains the means of two, five, ten, and thirty elements from the original distribution. By using the `apply` method, I can define which columns (how many) of `myRunifDataFrame` to use in order to compute the mean. This takes only a couple of seconds to run, opposed to many minutes by using the previous method (`for` loops) and is much more efficient.
 
-```{r runifDataFrame}
+```{r runifDataFrame, cache=T}
 myRunifDataFrame <- data.frame(replicate(30, sample(myRunifVec, 100000)))
 myRunifMeans <- data.frame("Means2"= apply(myRunifDataFrame[,1:2], 1, mean),
                            "Means5"= apply(myRunifDataFrame[,1:5], 1, mean),
@@ -48,7 +52,7 @@ myRunifMeans <- data.frame("Means2"= apply(myRunifDataFrame[,1:2], 1, mean),
                            "Means30"= apply(myRunifDataFrame[,1:30], 1, mean))
 ```
 
-```{r runifMean2, fig.cap="Histogram of 100,000 random means of two elements from a ~U(4, 6) distribution\\label{runif2}"}
+```{r runifMean2, fig.cap="Histogram of 100,000 random means of two elements from a ~U(4, 6) distribution\\label{runif2}", cache=T}
 hist(myRunifMeans$Means2, main="Histogram of the average of two elements from a ~Unif(4, 6)",
      xlab="x", freq = F)
 ```
@@ -56,7 +60,7 @@ hist(myRunifMeans$Means2, main="Histogram of the average of two elements from a 
 The histogram in figure \ref{runif2} is not similar to the population distribution shown in figure \ref{runifPop}. In fact, the distribution seems very triangular.
 
 ### 1.1.4
-```{r runifMean5, fig.cap="Histogram of 100,000 random means of five elements from a ~U(4, 6) distribution\\label{runif5}"}
+```{r runifMean5, fig.cap="Histogram of 100,000 random means of five elements from a ~U(4, 6) distribution\\label{runif5}", cache=T}
 hist(myRunifMeans$Means5, main="Histogram of the average of five elements from a ~Unif(4, 6)",
      xlab="x", freq = F)
 ```
@@ -64,7 +68,7 @@ hist(myRunifMeans$Means5, main="Histogram of the average of five elements from a
 The histogram in figure \ref{runif5} is different from the population distribution in figure \ref{runifPop}. There are more observations around $5$, and less toward the tails. It is different than the previous histogram (figure \ref{runif2}): the distribution is less triangular.
 
 ### 1.1.5
-```{r runifMean10, fig.cap="Histogram of 100,000 random means of ten elements from a ~U(4, 6) distribution\\label{runif10}"}
+```{r runifMean10, fig.cap="Histogram of 100,000 random means of ten elements from a ~U(4, 6) distribution\\label{runif10}", cache=T}
 hist(myRunifMeans$Means10, main="Histogram of the average of ten elements from a ~Unif(4, 6)",
      xlab="x", freq = F)
 ```
@@ -72,7 +76,7 @@ hist(myRunifMeans$Means10, main="Histogram of the average of ten elements from a
 The histogram in figure \ref{runif10} is different from the population distribution in figure \ref{runifPop}. This one is bell-shaped and seems to be symmetrical around the value $5$.
 
 ### 1.1.6
-```{r runifMean30, fig.cap="Histogram of 100,000 random means of thirty elements from a ~U(4, 6) distribution\\label{runif30}"}
+```{r runifMean30, fig.cap="Histogram of 100,000 random means of thirty elements from a ~U(4, 6) distribution\\label{runif30}", cache=T}
 hist(myRunifMeans$Means30, main="Histogram of the average of thirty elements from a ~Unif(4, 6)",
      xlab="x", freq = F)
 ```
@@ -81,9 +85,13 @@ The histogram in figure \ref{runif30} is different from the population distribut
 
 ***
 
+<!-- Reset R session -->
+`r rm(list=ls())`
+`r cat("\014")`
+
 ## 1.2
 ### 1.2.1
-```{r myRexpVec, fig.cap="Histogram of 10,000,000 random variables ~Exp(0.5)\\label{rexpPop}"}
+```{r myRexpVec, fig.cap="Histogram of 10,000,000 random variables ~Exp(0.5)\\label{rexpPop}", cache=T}
 myRexpVec <- rexp(10000000, 0.5)
 hist(myRexpVec,
      main = paste("Histogram of ", length(myRexpVec), "\n random variables ~ Exp(0.5)",
@@ -93,7 +101,7 @@ hist(myRexpVec,
 Figure \ref{rexpPop} shows the histogram of a $\sim Exp(0.5)$ distribution with `r as.integer(length(myRexpVec))` random variables.
 
 ### 1.2.2
-```{r sampleExp, fig.cap="Histogram of 100,000 random elements from a ~Exp(0.5) distribution\\label{rexpSample}"}
+```{r sampleExp, fig.cap="Histogram of 100,000 random elements from a ~Exp(0.5) distribution\\label{rexpSample}", cache=T}
 myRexpSample <- sample(myRexpVec, 100000)
 hist(myRexpSample,
      main = paste("Histogram of ", length(myRexpSample),
@@ -106,7 +114,7 @@ The histogram in figure \ref{rexpSample} is very similar to the population distr
 ### 1.2.3
 
 
-```{r rexpDataFrame}
+```{r rexpDataFrame, cache=T}
 myRexpDataFrame <- data.frame(replicate(30, sample(myRexpVec, 100000)))
 myRexpMeans <- data.frame("Means2"= apply(myRexpDataFrame[,1:2], 1, mean),
                            "Means5"= apply(myRexpDataFrame[,1:5], 1, mean),
@@ -114,7 +122,7 @@ myRexpMeans <- data.frame("Means2"= apply(myRexpDataFrame[,1:2], 1, mean),
                            "Means30"= apply(myRexpDataFrame[,1:30], 1, mean))
 ```
 
-```{r rexpMean2, fig.cap="Histogram of 100,000 random means of two elements from a ~Exp(0.5) distribution\\label{rexp2}"}
+```{r rexpMean2, fig.cap="Histogram of 100,000 random means of two elements from a ~Exp(0.5) distribution\\label{rexp2}", cache=T}
 hist(myRexpMeans$Means2, main="Histogram of the average of two elements from a ~Exp(0.5)",
      xlab="x", freq = F)
 ```
@@ -122,7 +130,7 @@ hist(myRexpMeans$Means2, main="Histogram of the average of two elements from a ~
 Figure \ref{rexp2} shows the histogram is slightly more skewed to the right than the population distribution in figure \ref{rexpPop}. In fact, this is a Gamma distribution with parameter $\alpha = 2*0.5 = 1$.
 
 ### 1.2.4
-```{r rexpMean5, fig.cap="Histogram of 100,000 random means of five elements from a ~Exp(0.5) distribution\\label{rexp5}"}
+```{r rexpMean5, fig.cap="Histogram of 100,000 random means of five elements from a ~Exp(0.5) distribution\\label{rexp5}", cache=T}
 hist(myRexpMeans$Means5, main="Histogram of the average of five elements from a ~Exp(0.5)",
      xlab="x", freq = F)
 ```
@@ -130,7 +138,7 @@ hist(myRexpMeans$Means5, main="Histogram of the average of five elements from a 
 The histogram when we take the mean of five elements from the original population, shown in figure \ref{rexp5}, is very different from the histogram of the population distribution in figure \ref{rexpPop}. It looks like the values are slowly distributing themselves around $2$, but with a longer tail to the right.
 
 ### 1.2.5
-```{r rexpMean10, fig.cap="Histogram of 100,000 random means of ten elements from a ~Exp(0.5) distribution\\label{rexp10}"}
+```{r rexpMean10, fig.cap="Histogram of 100,000 random means of ten elements from a ~Exp(0.5) distribution\\label{rexp10}", cache=T}
 hist(myRexpMeans$Means10, main="Histogram of the average of ten elements from a ~Exp(0.5)",
      xlab="x", freq = F)
 ```
@@ -138,7 +146,7 @@ hist(myRexpMeans$Means10, main="Histogram of the average of ten elements from a 
 By averaging ten elements, we can see in figure \ref{rexp10} that the distribution seems to be getting closer to a normal distribution centered around $2$. 
 
 ### 1.2.6
-```{r rexpMean30, fig.cap="Histogram of 100,000 random means of thirty elements from a ~Exp(0.5) distribution\\label{rexp30}"}
+```{r rexpMean30, fig.cap="Histogram of 100,000 random means of thirty elements from a ~Exp(0.5) distribution\\label{rexp30}", cache=T}
 hist(myRexpMeans$Means30, main="Histogram of the average of thirty elements from a ~Exp(0.5)",
      xlab="x", freq = F)
 ```
@@ -147,9 +155,13 @@ In figure \ref{rexp30}, we see the histogram when we take the average of 30 elem
 
 ***
 
+<!-- Reset R session -->
+`r rm(list=ls())`
+`r cat("\014")`
+
 ## 1.3
 ### 1.3.1
-```{r myBdist, fig.cap="Histogram of 5,000,000 random variables from a ~N(-3, 1) and 5,000,000 random variables from a ~N(3, 1)\\label{bdistPop}"}
+```{r myBdist, fig.cap="Histogram of 5,000,000 random variables from a ~N(-3, 1) and 5,000,000 random variables from a ~N(3, 1)\\label{bdistPop}", cache=T}
 myBdist <- c(rnorm(5000000, -3, 1), rnorm(5000000, 3, 1))
 hist(myBdist, main="Bimodal histogram of ~N(-3, 1) and ~N(3, 1)", xlab="x", freq = F)
 ```
@@ -159,7 +171,7 @@ We can see from the histogram in figure \ref{bdistPop} that the distribution is 
 ### 1.3.2
 
 
-```{r bdistDataFrame}
+```{r bdistDataFrame, cache=T}
 myBdistDataFrame <- data.frame(replicate(30, sample(myBdist, 100000)))
 myBdistMeans <- data.frame("Means5"= apply(myBdistDataFrame[,1:5], 1, mean),
                            "Means10"= apply(myBdistDataFrame[,1:10], 1, mean),
@@ -167,7 +179,7 @@ myBdistMeans <- data.frame("Means5"= apply(myBdistDataFrame[,1:5], 1, mean),
                            "Means30"= apply(myBdistDataFrame[,1:30], 1, mean))
 ```
 
-```{r bdist5, fig.cap="Histogram of 100,000 random means of five elements from a ~N(-3, 1) and a ~N(3, 1) distributions\\label{bdist5}"}
+```{r bdist5, fig.cap="Histogram of 100,000 random means of five elements from a ~N(-3, 1) and a ~N(3, 1) distributions\\label{bdist5}", cache=T}
 hist(myBdistMeans$Means5, main="Histogram of the average of five elements
      from a ~N(-3, 1) and a ~N(3, 1)", xlab="x", freq = F)
 ```
@@ -175,21 +187,21 @@ hist(myBdistMeans$Means5, main="Histogram of the average of five elements
 We can gather from the histogram in image \ref{bdist5} that the bimodality seen in figure \ref{bdistPop} is lost. Indeed, this histogram has only one "bump", and has a lot of values between $-2$ and $2$.
 
 ### 1.3.3
-```{r bdist10, fig.cap="Histogram of 100,000 random means of ten  elements from a ~N(-3, 1) and a ~N(3, 1) distributions\\label{bdist10}"}
+```{r bdist10, fig.cap="Histogram of 100,000 random means of ten  elements from a ~N(-3, 1) and a ~N(3, 1) distributions\\label{bdist10}", cache=T}
 hist(myBdistMeans$Means10, main="Histogram of the average of ten elements
      from a ~N(-3, 1) and a ~N(3, 1)", xlab="x", freq = F)
 ```
 
 The histogram in figure \ref{bdist10} is similar to the previous one (figure \ref{bdist5}), but less spread out. It is starting to look like a normal distribution.
 
-```{r bdist20, fig.cap="Histogram of 100,000 random means of twenty elements from a ~N(-3, 1) and a ~N(3, 1) distributions\\label{bdist20}"}
+```{r bdist20, fig.cap="Histogram of 100,000 random means of twenty elements from a ~N(-3, 1) and a ~N(3, 1) distributions\\label{bdist20}", cache=T}
 hist(myBdistMeans$Means20, main="Histogram of the average of twenty elements from
      a ~N(-3, 1) and a ~N(3, 1)", xlab="x", freq = F)
 ```
 
 By averaging over 20 elements from the original pouplation, the histogram seen in figure \ref{bdist20} is looking a lot like a normal distribution centered around $0$. The spread of the distribution is becoming smaller the more elements we average.
 
-```{r bdist30, fig.cap="Histogram of 100,000 random means of thirty elements from a ~N(-3, 1) and a ~N(3, 1) distributions\\label{bdist30}"}
+```{r bdist30, fig.cap="Histogram of 100,000 random means of thirty elements from a ~N(-3, 1) and a ~N(3, 1) distributions\\label{bdist30}", cache=T}
 hist(myBdistMeans$Means30, main="Histogram of the average of thirty elements from
      a ~N(-3, 1) and a ~N(3, 1)", xlab="x", freq = F)
 ```
@@ -200,6 +212,44 @@ The histogram in figure \ref{bdist30} does not look like the original population
 
 
 
+***
+
+<!-- Reset R session -->
+`r rm(list=ls())`
+`r cat("\014")`
+
+# Question 2
 
 
+```{r, cache=T}
+myData <- read.csv("hw2.csv", header = T, stringsAsFactors = F)
+names(myData)
+str(myData, strict.width = "w")
+```
+number of rows = `r nrow(myData)`
+
+number of cols = `r ncol(myData)`
+
+```{r, cache=T}
+# TODO: rename columns!
+myData$Service.Contract..Service.Contract.Event..Using.Build.Partner. <- as.logical(myData$Service.Contract..Service.Contract.Event..Using.Build.Partner.)
+myData$Opportunity..Service.Panel.Upgrade <- as.logical(myData$Opportunity..Service.Panel.Upgrade)
+myData$Opportunity..Reroof.under.Array <- as.logical(myData$Opportunity..Reroof.under.Array)
+myData$Opportunity..PE.Stamp.Required. <- as.logical(myData$Opportunity..PE.Stamp.Required.)
+
+myData$Opportunity..HOA.[myData$Opportunity..HOA. == "0"]  <- "No"
+myData$Opportunity..HOA.[myData$Opportunity..HOA. == "1"]  <- "Yes"
+myData$Opportunity..HOA. <- factor(myData$Opportunity..HOA., levels = unique(myData$Opportunity..HOA.))
+
+myData$Project.Status <- factor(myData$Project.Status, levels = unique(myData$Project.Status))
+
+myData$Opportunity..Purchased.Thru[myData$Opportunity..Purchased.Thru == "Costco (Dept 44)"] <- "Costco"
+myData$Opportunity..Purchased.Thru <- factor(myData$Opportunity..Purchased.Thru, levels = unique(myData$Opportunity..Purchased.Thru))
+myData$Agreement.Type <- factor(myData$Agreement.Type, levels = unique(myData$Agreement.Type))
+myData$Opportunity..Utility.Company <- factor(myData$Opportunity..Utility.Company, levels = unique(myData$Opportunity..Utility.Company))
+
+#unique(myData$Install.Branch) # uniformize the data (STATE - City)
+#unique(myData$Install.Branch) # uniformize the data (STATE - City)
+#unique(myData$Install.Branch) # uniformize the data (regular expressions?)
+```
 
