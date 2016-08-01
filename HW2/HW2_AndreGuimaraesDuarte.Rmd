@@ -1,11 +1,11 @@
 ---
 title: "MSAN 593 - Homework 2"
 author: "Andre Guimaraes Duarte"
-date: "July 24, 2016"
+date: "July 29, 2016"
 output: pdf_document
 ---
 
-```{r setup, include=FALSE}
+```{r setup, include=T}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
@@ -16,7 +16,7 @@ knitr::opts_chunk$set(echo = TRUE)
 # Question 1
 ## 1.1
 ### 1.1.1
-```{r myRunifVec, fig.cap="Histogram of 10,000,000 random variables ~ U(4, 6)\\label{runifPop}", cache=T}
+```{r myRunifVec, fig.cap="Histogram of 10,000,000 random variables ~ U(4, 6)\\label{runifPop}"}
 myRunifVec <- runif(10000000, 4, 6)
 hist(myRunifVec,
      main = paste("Histogram of ", length(myRunifVec), "\n random variables ~ U(4, 6)",
@@ -26,7 +26,7 @@ hist(myRunifVec,
 The histogram in figure \ref{runifPop} is the histogram of a $\sim U(4, 6)$ distribution with `r as.integer(length(myRunifVec))` random variables. 
 
 ### 1.1.2
-```{r sampleUnif, fig.cap="Histogram of a sample of 100,000 random elements from a ~U(4, 6) distribution\\label{runifSample}", cache=T}
+```{r sampleUnif, fig.cap="Histogram of a sample of 100,000 random elements from a ~U(4, 6) distribution\\label{runifSample}"}
 samples <- 100000
 myRunifSample <- sample(myRunifVec, 100000)
 hist(myRunifSample,
@@ -44,7 +44,7 @@ First, I define a data frame called `myRunifDataFrame` that has 30 columns. Each
 
 Then, I define a second data frame, called `myRunifMeans` that contains the means of two, five, ten, and thirty elements from the original distribution. By using the `apply` method, I can define which columns (how many) of `myRunifDataFrame` to use in order to compute the mean. This takes only a couple of seconds to run, opposed to many minutes by using the previous method (`for` loops) and is much more efficient.
 
-```{r runifDataFrame, cache=T}
+```{r runifDataFrame}
 myRunifDataFrame <- data.frame(replicate(30, sample(myRunifVec, 100000)))
 myRunifMeans <- data.frame("Means2"= apply(myRunifDataFrame[,1:2], 1, mean),
                            "Means5"= apply(myRunifDataFrame[,1:5], 1, mean),
@@ -52,7 +52,7 @@ myRunifMeans <- data.frame("Means2"= apply(myRunifDataFrame[,1:2], 1, mean),
                            "Means30"= apply(myRunifDataFrame[,1:30], 1, mean))
 ```
 
-```{r runifMean2, fig.cap="Histogram of 100,000 random means of two elements from a ~U(4, 6) distribution\\label{runif2}", cache=T}
+```{r runifMean2, fig.cap="Histogram of 100,000 random means of two elements from a ~U(4, 6) distribution\\label{runif2}"}
 hist(myRunifMeans$Means2, main="Histogram of the average of two elements from a ~Unif(4, 6)",
      xlab="x", freq = F)
 ```
@@ -60,7 +60,7 @@ hist(myRunifMeans$Means2, main="Histogram of the average of two elements from a 
 The histogram in figure \ref{runif2} is not similar to the population distribution shown in figure \ref{runifPop}. In fact, the distribution seems very triangular.
 
 ### 1.1.4
-```{r runifMean5, fig.cap="Histogram of 100,000 random means of five elements from a ~U(4, 6) distribution\\label{runif5}", cache=T}
+```{r runifMean5, fig.cap="Histogram of 100,000 random means of five elements from a ~U(4, 6) distribution\\label{runif5}"}
 hist(myRunifMeans$Means5, main="Histogram of the average of five elements from a ~Unif(4, 6)",
      xlab="x", freq = F)
 ```
@@ -68,7 +68,7 @@ hist(myRunifMeans$Means5, main="Histogram of the average of five elements from a
 The histogram in figure \ref{runif5} is different from the population distribution in figure \ref{runifPop}. There are more observations around $5$, and less toward the tails. It is different than the previous histogram (figure \ref{runif2}): the distribution is less triangular.
 
 ### 1.1.5
-```{r runifMean10, fig.cap="Histogram of 100,000 random means of ten elements from a ~U(4, 6) distribution\\label{runif10}", cache=T}
+```{r runifMean10, fig.cap="Histogram of 100,000 random means of ten elements from a ~U(4, 6) distribution\\label{runif10}"}
 hist(myRunifMeans$Means10, main="Histogram of the average of ten elements from a ~Unif(4, 6)",
      xlab="x", freq = F)
 ```
@@ -76,7 +76,7 @@ hist(myRunifMeans$Means10, main="Histogram of the average of ten elements from a
 The histogram in figure \ref{runif10} is different from the population distribution in figure \ref{runifPop}. This one is bell-shaped and seems to be symmetrical around the value $5$.
 
 ### 1.1.6
-```{r runifMean30, fig.cap="Histogram of 100,000 random means of thirty elements from a ~U(4, 6) distribution\\label{runif30}", cache=T}
+```{r runifMean30, fig.cap="Histogram of 100,000 random means of thirty elements from a ~U(4, 6) distribution\\label{runif30}"}
 hist(myRunifMeans$Means30, main="Histogram of the average of thirty elements from a ~Unif(4, 6)",
      xlab="x", freq = F)
 ```
@@ -91,7 +91,7 @@ The histogram in figure \ref{runif30} is different from the population distribut
 
 ## 1.2
 ### 1.2.1
-```{r myRexpVec, fig.cap="Histogram of 10,000,000 random variables ~Exp(0.5)\\label{rexpPop}", cache=T}
+```{r myRexpVec, fig.cap="Histogram of 10,000,000 random variables ~Exp(0.5)\\label{rexpPop}"}
 myRexpVec <- rexp(10000000, 0.5)
 hist(myRexpVec,
      main = paste("Histogram of ", length(myRexpVec), "\n random variables ~ Exp(0.5)",
@@ -101,7 +101,7 @@ hist(myRexpVec,
 Figure \ref{rexpPop} shows the histogram of a $\sim Exp(0.5)$ distribution with `r as.integer(length(myRexpVec))` random variables.
 
 ### 1.2.2
-```{r sampleExp, fig.cap="Histogram of 100,000 random elements from a ~Exp(0.5) distribution\\label{rexpSample}", cache=T}
+```{r sampleExp, fig.cap="Histogram of 100,000 random elements from a ~Exp(0.5) distribution\\label{rexpSample}"}
 myRexpSample <- sample(myRexpVec, 100000)
 hist(myRexpSample,
      main = paste("Histogram of ", length(myRexpSample),
@@ -114,7 +114,7 @@ The histogram in figure \ref{rexpSample} is very similar to the population distr
 ### 1.2.3
 
 
-```{r rexpDataFrame, cache=T}
+```{r rexpDataFrame}
 myRexpDataFrame <- data.frame(replicate(30, sample(myRexpVec, 100000)))
 myRexpMeans <- data.frame("Means2"= apply(myRexpDataFrame[,1:2], 1, mean),
                            "Means5"= apply(myRexpDataFrame[,1:5], 1, mean),
@@ -122,7 +122,7 @@ myRexpMeans <- data.frame("Means2"= apply(myRexpDataFrame[,1:2], 1, mean),
                            "Means30"= apply(myRexpDataFrame[,1:30], 1, mean))
 ```
 
-```{r rexpMean2, fig.cap="Histogram of 100,000 random means of two elements from a ~Exp(0.5) distribution\\label{rexp2}", cache=T}
+```{r rexpMean2, fig.cap="Histogram of 100,000 random means of two elements from a ~Exp(0.5) distribution\\label{rexp2}"}
 hist(myRexpMeans$Means2, main="Histogram of the average of two elements from a ~Exp(0.5)",
      xlab="x", freq = F)
 ```
@@ -130,7 +130,7 @@ hist(myRexpMeans$Means2, main="Histogram of the average of two elements from a ~
 Figure \ref{rexp2} shows the histogram is slightly more skewed to the right than the population distribution in figure \ref{rexpPop}. In fact, this is a Gamma distribution with parameter $\alpha = 2*0.5 = 1$.
 
 ### 1.2.4
-```{r rexpMean5, fig.cap="Histogram of 100,000 random means of five elements from a ~Exp(0.5) distribution\\label{rexp5}", cache=T}
+```{r rexpMean5, fig.cap="Histogram of 100,000 random means of five elements from a ~Exp(0.5) distribution\\label{rexp5}"}
 hist(myRexpMeans$Means5, main="Histogram of the average of five elements from a ~Exp(0.5)",
      xlab="x", freq = F)
 ```
@@ -138,20 +138,20 @@ hist(myRexpMeans$Means5, main="Histogram of the average of five elements from a 
 The histogram when we take the mean of five elements from the original population, shown in figure \ref{rexp5}, is very different from the histogram of the population distribution in figure \ref{rexpPop}. It looks like the values are slowly distributing themselves around $2$, but with a longer tail to the right.
 
 ### 1.2.5
-```{r rexpMean10, fig.cap="Histogram of 100,000 random means of ten elements from a ~Exp(0.5) distribution\\label{rexp10}", cache=T}
+```{r rexpMean10, fig.cap="Histogram of 100,000 random means of ten elements from a ~Exp(0.5) distribution\\label{rexp10}"}
 hist(myRexpMeans$Means10, main="Histogram of the average of ten elements from a ~Exp(0.5)",
      xlab="x", freq = F)
 ```
 
-By averaging ten elements, we can see in figure \ref{rexp10} that the distribution seems to be getting closer to a normal distribution centered around $2$. 
+By averaging ten elements, we can see in figure \ref{rexp10} that the distribution continues to "shift" to the right, although the skew is still present. 
 
 ### 1.2.6
-```{r rexpMean30, fig.cap="Histogram of 100,000 random means of thirty elements from a ~Exp(0.5) distribution\\label{rexp30}", cache=T}
+```{r rexpMean30, fig.cap="Histogram of 100,000 random means of thirty elements from a ~Exp(0.5) distribution\\label{rexp30}"}
 hist(myRexpMeans$Means30, main="Histogram of the average of thirty elements from a ~Exp(0.5)",
      xlab="x", freq = F)
 ```
 
-In figure \ref{rexp30}, we see the histogram when we take the average of 30 elements from the original negative exponential population shown in figure \ref{rexpPop}. The distribution is now very different, and looks like a normal distribution with mean $2$. The tail on the right is still slightly more spread than the one on the left.
+In figure \ref{rexp30}, we see the histogram when we take the average of 30 elements from the original negative exponential population shown in figure \ref{rexpPop}. The distribution is now very different, and almost looks like a normal distribution centered around $2$. But we can still distinguish a longer tail to the right of the histogram.
 
 ***
 
@@ -161,7 +161,7 @@ In figure \ref{rexp30}, we see the histogram when we take the average of 30 elem
 
 ## 1.3
 ### 1.3.1
-```{r myBdist, fig.cap="Histogram of 5,000,000 random variables from a ~N(-3, 1) and 5,000,000 random variables from a ~N(3, 1)\\label{bdistPop}", cache=T}
+```{r myBdist, fig.cap="Histogram of 5,000,000 random variables from a ~N(-3, 1) and 5,000,000 random variables from a ~N(3, 1)\\label{bdistPop}"}
 myBdist <- c(rnorm(5000000, -3, 1), rnorm(5000000, 3, 1))
 hist(myBdist, main="Bimodal histogram of ~N(-3, 1) and ~N(3, 1)", xlab="x", freq = F)
 ```
@@ -171,7 +171,7 @@ We can see from the histogram in figure \ref{bdistPop} that the distribution is 
 ### 1.3.2
 
 
-```{r bdistDataFrame, cache=T}
+```{r bdistDataFrame}
 myBdistDataFrame <- data.frame(replicate(30, sample(myBdist, 100000)))
 myBdistMeans <- data.frame("Means5"= apply(myBdistDataFrame[,1:5], 1, mean),
                            "Means10"= apply(myBdistDataFrame[,1:10], 1, mean),
@@ -179,7 +179,7 @@ myBdistMeans <- data.frame("Means5"= apply(myBdistDataFrame[,1:5], 1, mean),
                            "Means30"= apply(myBdistDataFrame[,1:30], 1, mean))
 ```
 
-```{r bdist5, fig.cap="Histogram of 100,000 random means of five elements from a ~N(-3, 1) and a ~N(3, 1) distributions\\label{bdist5}", cache=T}
+```{r bdist5, fig.cap="Histogram of 100,000 random means of five elements from a ~N(-3, 1) and a ~N(3, 1) distributions\\label{bdist5}"}
 hist(myBdistMeans$Means5, main="Histogram of the average of five elements
      from a ~N(-3, 1) and a ~N(3, 1)", xlab="x", freq = F)
 ```
@@ -187,69 +187,285 @@ hist(myBdistMeans$Means5, main="Histogram of the average of five elements
 We can gather from the histogram in image \ref{bdist5} that the bimodality seen in figure \ref{bdistPop} is lost. Indeed, this histogram has only one "bump", and has a lot of values between $-2$ and $2$.
 
 ### 1.3.3
-```{r bdist10, fig.cap="Histogram of 100,000 random means of ten  elements from a ~N(-3, 1) and a ~N(3, 1) distributions\\label{bdist10}", cache=T}
+```{r bdist10, fig.cap="Histogram of 100,000 random means of ten  elements from a ~N(-3, 1) and a ~N(3, 1) distributions\\label{bdist10}"}
 hist(myBdistMeans$Means10, main="Histogram of the average of ten elements
      from a ~N(-3, 1) and a ~N(3, 1)", xlab="x", freq = F)
 ```
 
 The histogram in figure \ref{bdist10} is similar to the previous one (figure \ref{bdist5}), but less spread out. It is starting to look like a normal distribution.
 
-```{r bdist20, fig.cap="Histogram of 100,000 random means of twenty elements from a ~N(-3, 1) and a ~N(3, 1) distributions\\label{bdist20}", cache=T}
+```{r bdist20, fig.cap="Histogram of 100,000 random means of twenty elements from a ~N(-3, 1) and a ~N(3, 1) distributions\\label{bdist20}"}
 hist(myBdistMeans$Means20, main="Histogram of the average of twenty elements from
      a ~N(-3, 1) and a ~N(3, 1)", xlab="x", freq = F)
 ```
 
 By averaging over 20 elements from the original pouplation, the histogram seen in figure \ref{bdist20} is looking a lot like a normal distribution centered around $0$. The spread of the distribution is becoming smaller the more elements we average.
 
-```{r bdist30, fig.cap="Histogram of 100,000 random means of thirty elements from a ~N(-3, 1) and a ~N(3, 1) distributions\\label{bdist30}", cache=T}
+```{r bdist30, fig.cap="Histogram of 100,000 random means of thirty elements from a ~N(-3, 1) and a ~N(3, 1) distributions\\label{bdist30}"}
 hist(myBdistMeans$Means30, main="Histogram of the average of thirty elements from
      a ~N(-3, 1) and a ~N(3, 1)", xlab="x", freq = F)
 ```
 
-The histogram in figure \ref{bdist30} does not look like the original population distribution in figure \ref{bdistPop}. In fact, the two modes that were present at first have completely disappeared. In its place, we seems to have a single standard normal distribution, centered around the average of the original two means: $\frac{-3 + 3}{2} = 0$.
+The histogram in figure \ref{bdist30} does not look like the original population distribution in figure \ref{bdistPop}. In fact, the two modes that were present at first have completely disappeared. In its place, we seems to have a single normal distribution, centered around the average of the original two means: $\frac{-3 + 3}{2} = 0$.
 
 ### 1.3.4
+Throughout this problem, we have seen how sampling and averaging several random variables from a random distribution (here we used a uniform, an exponential, and a combination of two normal distributions) leads to new distributions. This phenomenon is called a _convolution of probability distributions_. Convolutions have many uses in various fields, such as signal processing (with regards to both time and space), probability theory, cristallography, and even quantum mechanics!
 
+In this exercise, we have seen that summing $n = 2$ independent random uniformely distributed random variables (with parameters $a$ and $b$) leads to a triangular distribution (this one actually has a special name and is called _Irwin-Hall distribution_). As $n$ tends to infinity, the distribution of the convolution tends to that of a normally distributed random variable with parameters $\mu = \frac{a + b}{2}$ and $\sigma^2 = \frac{(b-a)^2}{12}$.
 
+When doing the convolution of $n$ exponentially distributed random variables (with parameter $\theta$), the resulting distribution will tend to resemble that of a Gamma distribution (with parameters ($n$, $\theta$)).
+
+When doing the convolution of $n$ random variables samples from two distinct normal distributions (with parameters $\mu_1; \sigma_1^2$ and $\mu_2; \sigma_2^2$), the resulting  distribution tends to be that of a normal distribution with parameters $\mu = \mu_1 + \mu_2$ and $\sigma^2 = \sigma_1^2 + \sigma_2^2$.
 
 ***
+
+\newpage
 
 <!-- Reset R session -->
 `r rm(list=ls())`
 `r cat("\014")`
 
 # Question 2
+For this question, we are given a data set that we need to clean up. The only instructions we have is that entries created before September 01 2015 do not interest us, and can therefore be discarded.
 
+## Loading the data and first visualization
+The first step is loading the data onto R. I call `names` to get a first look at the variables we are dealing with, `str` to get a summary of the structure of the data frame, and `head` to see what the data actually looks like. Note: in importing the data, I used the flag `na.strings = c("NA", "")`. This allows for empty strings to be imported as `NA`s.
 
-```{r, cache=T}
-myData <- read.csv("hw2.csv", header = T, stringsAsFactors = F)
+```{r loadData}
+myData <- read.csv("hw2.csv", header = T, stringsAsFactors = F, na.strings = c("NA", ""))
 names(myData)
 str(myData, strict.width = "w")
+head(myData, 5)
 ```
-number of rows = `r nrow(myData)`
 
-number of cols = `r ncol(myData)`
+We can see that we have `r nrow(myData)` rows (entries) and `r ncol(myData)` columns (variables). We can see two things from this information: first, there is a column `myData$Created.Date`. We will use this one to filter out observations before our specified date. Second, the columns need to be renamed for simplicity sake. These are my first priorities. We can also see that dates are imported as strings in the format `mm/dd/yy`. This is important, since we will be converting these strings into a `Date` format, so that we can sort them and keep only the ones that matter to us here.
 
-```{r, cache=T}
-# TODO: rename columns!
-myData$Service.Contract..Service.Contract.Event..Using.Build.Partner. <- as.logical(myData$Service.Contract..Service.Contract.Event..Using.Build.Partner.)
-myData$Opportunity..Service.Panel.Upgrade <- as.logical(myData$Opportunity..Service.Panel.Upgrade)
-myData$Opportunity..Reroof.under.Array <- as.logical(myData$Opportunity..Reroof.under.Array)
-myData$Opportunity..PE.Stamp.Required. <- as.logical(myData$Opportunity..PE.Stamp.Required.)
+## Removing entries that we don't need (prior to September 01 2015)
+To convert the dates into a `Date` format, I use the code below.
 
-myData$Opportunity..HOA.[myData$Opportunity..HOA. == "0"]  <- "No"
-myData$Opportunity..HOA.[myData$Opportunity..HOA. == "1"]  <- "Yes"
-myData$Opportunity..HOA. <- factor(myData$Opportunity..HOA., levels = unique(myData$Opportunity..HOA.))
-
-myData$Project.Status <- factor(myData$Project.Status, levels = unique(myData$Project.Status))
-
-myData$Opportunity..Purchased.Thru[myData$Opportunity..Purchased.Thru == "Costco (Dept 44)"] <- "Costco"
-myData$Opportunity..Purchased.Thru <- factor(myData$Opportunity..Purchased.Thru, levels = unique(myData$Opportunity..Purchased.Thru))
-myData$Agreement.Type <- factor(myData$Agreement.Type, levels = unique(myData$Agreement.Type))
-myData$Opportunity..Utility.Company <- factor(myData$Opportunity..Utility.Company, levels = unique(myData$Opportunity..Utility.Company))
-
-#unique(myData$Install.Branch) # uniformize the data (STATE - City)
-#unique(myData$Install.Branch) # uniformize the data (STATE - City)
-#unique(myData$Install.Branch) # uniformize the data (regular expressions?)
+```{r filterDate}
+myData$Created.Date <- as.Date( as.character(myData$Created.Date), "%m/%d/%y")
 ```
+
+Now, we can perform mathematic operations on this row. For instance, to see only entries created on or after September 01 2015, we can use `myData$Created.Date[myData$Created.Date >= "2015-09-01"]`. Now, to subset our data frame to only this period, we use the following code.
+
+```{r subset}
+myData <- subset(myData, myData$Created.Date >= "2015-09-01")
+```
+
+We now have `r nrow(myData)` rows in our data frame.
+
+## Renaming the variables
+Now, let's rename the variables. <!--At the end, we can call the method `attach`, so that we don't need to keep using `myData$<column name>`, but only `<column name>` to call a variable. Note: in order to modify the actual data frame, we still need to use the full name, or else we will be creating a new variable in the environment with name `<column name>`.-->
+
+```{r rename}
+colnames(myData) <- c("PName",
+                      "CDate",
+                      "PStatus",
+                      "PurchasedThru",
+                      "AgrType",
+                      "InstBranch",
+                      "UtilityCompany",
+                      "Jurisdiction",
+                      "SysSize",
+                      "UsingPartner",
+                      "PanelUpgrade",
+                      "ReroofArray",
+                      "HOA",
+                      "PEStampReq")
+str(myData, strict.width = "w")
+```
+
+Now the variables have names that are not only shorter, but easier to understand as well. The next step is coercing the data into "better" types (`factor`, `logical`, etc).
+
+## Modifying the data types 
+- `PName`, the project name/code has type ``r typeof(myData$PName)`` and class ``r class(myData$PName)``. No changes are needed.
+
+- `CDate`, the project creation date, has type ``r typeof(myData$CDate)`` and class ``r class(myData$CDate)``. No changes are needed.
+
+- `PStatus`, the project status, has type ``r typeof(myData$PStatus)`` and class ``r class(myData$PStatus)``. This variable can be transformed into a `factor` with `myData$PStatus <- factor(myData$PStatus, levels = unique(myData$PStatus))`.
+```{r PStatus}
+myData$PStatus <- factor(myData$PStatus, levels = unique(myData$PStatus))
+summary(myData$PStatus)
+```
+
+We can also plot a histogram of this data:
+```{r pStatusHist, fig.cap="Histogram of project status\\label{pStatusHist}"}
+plot(myData$PStatus, main="Histogram of project status", ylab="Frequency")
+```
+
+We can see in figure \ref{pStatusHist} that there are considerably more open projects than completed, blocked, and cancelled.
+
+- `PurchasedThru`, the store where the equipment was bought, has type ``r typeof(myData$PurchasedThru)`` and class ``r class(myData$PurchasedThru)``. This variable can be transformed into a `factor`. But first, we need to change one name, and group two entries together ("Standard (Non-Retail)" simplified to "Non-Retail", and "Costco (Dept 44)" is the same as "Costco").
+```{r PurchasedThru}
+myData$PurchasedThru[myData$PurchasedThru == "Costco (Dept 44)"] <- "Costco"
+myData$PurchasedThru[myData$PurchasedThru == "Standard (Non-Retail)"] <- "Non-Retail"
+myData$PurchasedThru <- factor(myData$PurchasedThru, levels = unique(myData$PurchasedThru))
+summary(myData$PurchasedThru)
+```
+
+- `AgrType`, the agreement type, has type ``r typeof(myData$AgrType)`` and class ``r class(myData$AgrType)``. This variable can be converted into a `factor` with `myData$AgrType <- factor(myData$AgrType, levels = unique(myData$AgrType))`.
+```{r AgrType}
+myData$AgrType <- factor(myData$AgrType, levels = unique(myData$AgrType))
+summary(myData$AgrType)
+```
+
+- `InstBranch`, the install branch, has type ``r typeof(myData$InstBranch)`` and class ``r class(myData$InstBranch)``. This vector contains names of cities. There are `r length(unique(myData$InstBranch))` distinct cities. It would be nice if all the entries followed a certain pattern, such as `STATE - City`, but they don't. We can use regular expressions in order to filter them out and change them manually, but won't be doing so in this assignment.
+
+- `UtilityCompany`, the utility company, has type ``r typeof(myData$UtilityCompany)`` and class ``r class(myData$UtilityCompany)``. This variable can be converted into a `factor` with `myData$UtilityCompany <- factor(myData$UtilityCompany, levels = unique(myData$UtilityCompany))`. 
+
+```{r}
+myData$UtilityCompany <- factor(myData$UtilityCompany, levels = unique(myData$UtilityCompany))
+```
+Note: There are `r length(levels(myData$UtilityCompany))` levels for this one, so we are not printing the result of `summary(myData$UtilityCompany)`.
+
+- `Jurisdiction`, the jurisdcition, has type ``r typeof(myData$Jurisdiction)`` and class ``r class(myData$Jurisdiction)``. This variable contains names of cities. They all follow a certain pattern: `STATE - CITY`, except for one where the city is in lowercase. This specificity was found by looking at `unique(myData$Jurisdiction)` (there are `r length(unique(myData$Jurisdiction))` unique entries!), and is `NY-City of Longbeach`. To find the rows, we can use the query `which(myData$Jurisdiction == "NY-City of Longbeach")`, which returns `r which(myData$Jurisdiction == "NY-City of Longbeach")`. In order to update them, we can then do:
+
+```{r NY-City of Longbeach}
+indices_Jurisdiction_toUpper <- which(myData$Jurisdiction == "NY-City of Longbeach")
+myData$Jurisdiction[indices_Jurisdiction_toUpper] <- toupper("NY-City of Longbeach")
+```
+
+We can do some interesting stuff with this. For example, we can have a look at how many entries have a jurisdiction in the state of California:
+
+```{r jurisdictionTableCalifornia}
+table(grepl("CA.*", myData$Jurisdiction))
+```
+
+We see that there are `r table(grepl("CA.*", myData$Jurisdiction))[[2]]` entries that correspond to this query. About a third of our dataset (approximately 30,000 rows) has the jurisdiction in California.
+
+- `SysSize`, the system size/area, has type ``r typeof(myData$SysSize)`` and class ``r class(myData$SysSize)``. No changes are needed. We can, however, plot a histogram of these values:
+
+```{r sysSizeHist, fig.cap="Histogram of system sizes\\label{sysSizeHist}"}
+hist(myData$SysSize, main = "Histogram of system sizes",
+     xlab = "System size", freq = F, ylim = c(0, 0.18))
+x <- seq(0, 30, 0.1)
+y <- dgamma(x, shape = mean(myData$SysSize, na.rm = T))
+lines(y~x, col = "blue", legend(12, 0.1,
+     paste("Gamma distribution (alpha=", round(mean(myData$SysSize, na.rm = T), 3), ")"),
+     col = "blue", lty = 1, cex = 0.9))
+```
+
+Figure \ref{sysSizeHist} shows a very nice distribution (it looks like a Poisson distribution).
+
+- `UsingPartner`, whether the owner is using a partner, has type ``r typeof(myData$UsingPartner)`` and class ``r class(myData$UsingPartner)``. It can be converted into a `logical`: with `myData$UsingPartner <- as.logical(myData$UsingPartner)`.
+```{r UsingPartner}
+myData$UsingPartner <- as.logical(myData$UsingPartner)
+summary(myData$UsingPartner)
+```
+
+- `PanelUpgrade`, whether the owner needs/has had to upgrade, has type ``r typeof(myData$PanelUpgrade)`` and class ``r class(myData$PanelUpgrade)``. It can be converted into a `logical` with `myData$PanelUpgrade <- as.logical(myData$PanelUpgrade)`.
+```{r PanelUpgrade}
+myData$PanelUpgrade <- as.logical(myData$PanelUpgrade)
+summary(myData$PanelUpgrade)
+```
+
+- `ReroofArray`, whether the owner needs/has had a reroof array, has type ``r typeof(myData$ReroofArray)`` and class ``r class(myData$ReroofArray)``. It can be converted into a `logical` with `myData$ReroofArray <- as.logical(myData$ReroofArray)`.
+```{r ReroofArray}
+myData$ReroofArray <- as.logical(myData$ReroofArray)
+summary(myData$ReroofArray)
+```
+
+- `HOA`, whether the owner is part of the home-owners association, has type ``r typeof(myData$HOA)`` and class ``r class(myData$HOA)``. We have two options here: either convert this variable into a `logical` or a `factor`. I decided to convert it into a logical. First, we need to convert "No"s to "0"s and "Yes"s to "1"s. Another choice that I made is to convert entries with "Customer did not know" to `NA`s. This all is done below:
+```{r HOA}
+myData$HOA[myData$HOA == "No"] <- "0"
+myData$HOA[myData$HOA == "Yes"] <- "1"
+myData$HOA[myData$HOA == "Customer did not know"] <- NA
+myData$HOA <- as.logical(myData$HOA == "1")
+summary(myData$HOA)
+```
+
+- `PEStampReq`, whether a PE stamp is required, has type ``r typeof(myData$PEStampReq)`` and class ``r class(myData$PEStampReq)``. It can be converted into a `logical`with `myData$PEStampReq <- as.logical(myData$PEStampReq)`.
+```{r PEStampReq}
+myData$PEStampReq <- as.logical(myData$PEStampReq)
+summary(myData$PEStampReq)
+```
+
+To visualize the changes we made, we can have another look at the structure of our data frame:
+```{r myData}
+str(myData, strict.width = "w")
+```
+
+Now our data frame is much better organized, and we can start delving deeper into its contents.
+
+## Cleaning up NAs
+
+`PStatus` contains the status of the project. It can be of only `r length(levels(myData$PStatus))` types: `r sapply(1:4, function(i) {levels(myData$PStatus)[i]})`. However, there are `r sum(is.na(myData$PStatus))` `NA`s in this vector. If we print out these rows of the data frame, we get the following:
+
+```{r PStatusNAs}
+myData[is.na(myData$PStatus),]
+```
+
+We can _clearly_ see that these entries are all gibberish (one of them is literally a `test` entry!), and have `NA`s in all columns except for the creation date and project name. Therefore, we can remove them from the data frame.
+
+```{r removePStatusNAs}
+myData <- myData[!is.na(myData$PStatus),]
+```
+
+We now have `r nrow(myData)` rows in the data frame.
+
+However, there are still lots of entries with many `NA`s that we can deal with. The function `rowSums` is very useful in this case. Indeed, with a single statement, we can find the rows with more than a specific number of `NA`s. In this case, we can conservatively say that if an entry has more than five `NA`s, it can probably be removed from the data set. Looking at those entries (with command `myData[rowSums(is.na(myData)) >= 5,]`) shows that there are many entries with basically only `NA`s, except for a couple of them, where the project status was "Cancelled". Therefore, we can adapt the above code to include this condition. Then we update `myData` to keep everything but the rows that satisfy both conditions.
+
+```{r rowSumsNAs}
+myData <- myData[!(rowSums(is.na(myData)) >= 5 & myData$PStatus != "Cancelled"), ]
+```
+
+We now have `r nrow(myData)` rows in the data frame.
+
+`PName` contains the project name. The general form of the values is `PR-<project number>`. We can use regular expressions to see if any entries do not follow this concensus for the naming of the project:
+
+```{r grepPName}
+myData$PName[!grepl("^PR-.*", myData$PName)]
+```
+
+We see here that there are two entries for which the project name does not follow the pattern `PR-<project number>`. In this case, we will remove these two entries.
+
+```{r removePName}
+indices_PName_toRemove <- c(which(myData$PName == myData$PName[!grepl("^PR-.*",
+                                                                      myData$PName)][1]),
+                            which(myData$PName == myData$PName[!grepl("^PR-.*",
+                                                                      myData$PName)][2]))
+myData <- myData[-indices_PName_toRemove,]
+```
+
+We now have `r nrow(myData)` rows in the data frame.
+
+## Organizing the data by monthly activity
+We can create a new column `CDateMonth` in order to organize the data monthly. First, we use a series of nested `ifelse` commands to sort the data according to month. Then, we coerce that data into a `factor`. Note: The order here is important, and goes _from September to April_. Indeed, since we are inbetween two years, in this case January **does not** come before September. We can then plot the new column and see a histogram of the number of projects created per month.
+```{r byDates, fig.cap="Histogram of the total number of projects created per month\\label{histPerMonth}"}
+myData$CDateMonths <- 
+  ifelse(myData$CDate >= "2015-09-01" & myData$CDate <= "2015-09-30", "September",
+  ifelse(myData$CDate >= "2015-10-01" & myData$CDate <= "2015-10-31", "October",
+  ifelse(myData$CDate >= "2015-11-01" & myData$CDate <= "2015-11-30", "November",
+  ifelse(myData$CDate >= "2015-12-01" & myData$CDate <= "2015-12-31", "December",
+  ifelse(myData$CDate >= "2016-01-01" & myData$CDate <= "2016-01-31", "January",
+  ifelse(myData$CDate >= "2016-02-01" & myData$CDate <= "2016-02-29", "February",
+  ifelse(myData$CDate >= "2016-03-01" & myData$CDate <= "2016-03-31", "March",
+  ifelse(myData$CDate >= "2016-04-01" & myData$CDate <= "2016-04-30", "April", NA))))))))
+myData$CDateMonths <- factor(myData$CDateMonths,
+                             levels = c("September", "October", "November", "December",
+                                        "January", "February", "March", "April"),
+                             ordered = T)
+plot(myData$CDateMonths, main = "Histogram of monthly activity",
+                         ylab = "Number of projects created",
+                         xlab = "Month")
+```
+
+As we can see in figure \ref{histPerMonth}, the number of projects created per month has been over $3000$ since September 2015. There was less demand during the winter months. Since December, there has been a steady growth in projects created. Note: the last data entry is from `r max(myData$CDate)`, hence the "shorter" column for the month of April. 
+
+## Conclusion
+After all this janitorial exercise, we have managed to clean up the data somewhat well. Columns now have cleaner (shorter) and more intuitive names, the data is uniform across the columns (each variable has its very specific type), we have defined factors and logical vectors, and even corrected a jurisdiction name. We removed rows that corresponded to old data, those that had "too many" empty cells ("too many" is merely my interpretation, and we could have chosen a higher or smaller number of `NA`s for an entry to be considered discardable), and those whose project name didn't follow the usual pattern that we would expect. We have shown tables and plots summarizing the data (and even a potential statistical distribution for system sizes!). Finally, we have created a whole new variable that collects the data in monthly blocks, which is useful in order to visualize business in a per-month basis.
+
+The conclusion that I take from this problem is that a lot of work can be done with a data set, even without knowing what the data refers to. There are many different ways to approach a dataset-cleaning problem, and my first take at it is probably still very amateurish, but I think I learned a lot already by doing this exercise. One thing I think I could have explored more is how to use regular expressions to further separate the data by state and/or city. For example, I would have liked to create a histogram with the number of projects per state. I managed to create tables for each state (using the `Jurisdiction` column and the state of California as an example in this write-up), but not an entire plot that would get each state automatically. The built-in dataset `state.abb`, which is a vector with all US states two-letter abbreviations, could be a good idea of where to start in order to accomplish this goal, but I unfortunately did not manage to do it for this assignment.
+
+
+
+
+
+
+
+
+
+
+
 
