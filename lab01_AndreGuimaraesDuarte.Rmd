@@ -1,0 +1,60 @@
+---
+title: "My First RMarkdown Document"
+author: "Andre Guimaraes Duarte"
+date: "July 15, 2016"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# R Markdown
+
+This is my first R Markdown document. Iam required to submit all **MSAN 593** homework in RMkardown. I am going to import a large dataset from the Housing Affordability Data System (HADS) from Data,gov using the `read.csv` function. The Housing Affordability Data System (HADS) is a set of gousing-unit level datasets that measures the affordability of housing units and the housing cost burdens of households, relative to area median incomes, poverty level incomes, and Fair Market Rents.
+
+```{r readDataBad, eval = F}
+read.csv("~/Desktop/hadsData.txt")
+```
+
+This fails for a few reasons, namely, I read in the file and stored it to no where. So I wasted my time waiting for R to read in the file, and then when it finally did, it printed some rows to the Console window, and then the following message was printed to the console `[ reached getOption("max.print") -- omitted 64434 rows ]` and voila, the data disappeared faster than it loaded. Now I know better.
+
+```{r readDataGood}
+hadsData <- read.csv("~/Desktop/hadsData.txt")
+```
+
+The HADS dataset has `r nrow(hadsData)` rows and `r ncol(hadsData)` columns. It would be imprudent to run `str()` on all `r ncol(hadsData)` variables in the dataset, so I will just show the first ten.
+
+```{r first10var, echo = F}
+str(hadsData[1:10])
+```
+
+I am particularly interested in further exploring the `AGE1` and `REGION` variables of the data set. I will now create two subsections, one for each variable.
+
+## `AGE1`
+
+`AGE1` is defined by the HADS data dictionary as the age of the head of household. The mean age of household is `r round(mean(hadsData$AGE1), digits = 2)` and the min and max are `r min(hadsData$AGE1)` and `r max(hadsData$AGE1)` respectively. Clearly there is something funky going on in the data if the minimum age is `r min(hadsData$AGE1)`. Anyhow, I will generate a histogram of the ages:
+
+```{r hist, echo = F}
+hist(hadsData$AGE1)
+```
+
+This is not a very pretty histogram, but it gets the idea across.
+
+## `REGION`
+
+`REGION` is defined by the HADS data dictionary as the census region. I observe that even though `type` of `REGION` is ``r typeof(hadsData$REGION)``, the `class` is ``r class(hadsData$REGION)``, so I will generate a bar graph to evaluate the frequencies of occurence of each region:
+
+```{r plot, echo = F}
+plot(hadsData$REGION)
+```
+
+So that we can get exact numbers, I can also generate a contingency table:
+
+```{r table, echo = F}
+table(hadsData$REGION)
+```
+
+## Conclusion
+
+This brings me to the end of my first RMarkdown document.
