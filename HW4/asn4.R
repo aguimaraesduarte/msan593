@@ -7,31 +7,40 @@ tweets = read.csv("tweets.csv", header = F, stringsAsFactors = F)
 
 # 1
 # tweets with the word <flight> in them
-(q1 <- tweets[grepl("\\<flight\\>", tweets[,]),])
+q1 <- tweets[grepl("\\<flight\\>", tweets[,]),]
+writeLines(c("The tweets with the word 'flight' in them are", q1,""))
 
 # 2
 # number of tweets ending in a <?>
-(q2 <- sum(grepl("\\?$", tweets[,])))
+q2 <- sum(grepl("\\?$", tweets[,]))
 #grep("\\?$", tweets[,], value = T)
+writeLines(c("There are ", q2, " tweets ending in a '?'"), sep = "")
 
 # 3
 # number of tweets with three uppercase letters (airport name)
-(q3 <- sum(grepl("[A-Z]{3}", tweets[,]))) # problem with tweet #7 EZP in url
+q3 <- sum(grepl("[A-Z]{3}", tweets[,])) # problem with tweet #7 EZP in url
 #grep("[A-Z]{3}", tweets[,], value = T)
+writeLines(c("There are ", q3,
+             " tweets referencing airport names\nNote: one of those is actually three capital letters in a URL"),
+           sep = "")
 
 # 4
 # tweets with a url (<http> or <https>)
-(q4 <- tweets[grepl("http[s]?:\\/\\/", tweets[,]),])
+q4 <- tweets[grepl("http[s]?:\\/\\/", tweets[,]),]
+writeLines(c("The tweets with a URL are", q4, ""))
 
 # 5
 # replace 2 or more <!> with only one <!>
-(q5 <- tweets[,] <- gsub("[\\!]{2,}", "\\!", tweets[,]))
+q5 <- tweets[,] <- gsub("[\\!]{2,}", "\\!", tweets[,])
+writeLines(c("By replacing two or more occurrences of '!' with a single '!', we get", q5, ""))
 
 # 6
 # replace 2 or more <?>, <!>, <.> with only one <.>.
 q6 <- tweets[,] <- gsub("[\\!\\?\\.]{2,}", "\\.", tweets[,])
 # split on <.> and save into list
-(split_tweets <- strsplit(q6, "\\.")) # problem with urls
+split_tweets <- strsplit(q6, "\\.") # problem with urls
+writeLines(c("By replacing two or more '?', '!', and/or '.' with only one '.', and splitting on '.', we get",
+             unlist(split_tweets), "", "Note: saved as a list, but unlisted for printing", ""))
 
 # 7
 # define hashtag pattern < #<statement> >
@@ -39,42 +48,50 @@ pattern <- "\\#[a-zA-z0-9]*"
 # get all matches for each tweet
 m <- gregexpr(pattern, tweets[,])
 # catch the hashtag and save into list
-(hashtags <- regmatches(tweets[,], m))
+hashtags <- regmatches(tweets[,], m)
+writeLines(c("By catching all the hashtags, we get", unlist(hashtags),
+             "", "Note: saved as a list, but unlisted for printing", ""))
 
 #########################################################
 #########################################################
 # Reset R session
-rm(list=ls())
-cat("\014")
+#rm(list=ls())
+#cat("\014")
 
 # Question 2
 dates <- read.csv("dates.csv", header = T, stringsAsFactors = F,
                   na.strings = "")
 dates <- dates[complete.cases(dates),] #remove NAs
 
+# Check if lubridate is installed and install/load the package
+if(!"lubridate" %in% rownames(installed.packages())){
+  install.packages("lubridate", dependencies = T)
+}
+library(lubridate)
+
+# convert to Date using lubridate package
+myDates <- data.frame(StartDate = mdy_hm(dates$Start.Date),
+                      EndDate = mdy_hm(dates$End.Date))
+
 # 1 --> commented out for grader
-#toRemove_for = c()
-#for(i in 1:nrow(dates)){
-#  r <- strptime(dates[i,], "%m/%d/%y %H:%M")
-#  if(r[1] > r[2]){
-#    toRemove <- append(toRemove, i)
-#  }
+#toRemove = vector(mode="logical", length=nrow(myDates))
+#for(i in 1:nrow(myDates)){
+#  toRemove[i] <- myDates$StartDate[i] > myDates$EndDate[i]
 #}
-#dates_fixed_for <- dates[-toRemove_for,]
+#dates_fixed_for <- myDates[!toRemove,]
 
 # 2
 fun_toRemove <- function(x){
-  x <- strptime(x, "%m/%d/%y %H:%M")
-  return(x[1] > x[2])
+  x[1] > x[2]
 }
-toRemove_apply <- apply(dates, 1, fun_toRemove)
-dates_fixed_apply <- dates[!toRemove_apply,]
+toRemove_apply <- apply(myDates, 1, fun_toRemove)
+dates_fixed_apply <- myDates[!toRemove_apply,]
 
 #########################################################
 #########################################################
 # Reset R session
-rm(list=ls())
-cat("\014")
+#rm(list=ls())
+#cat("\014")
 
 # Question 3
 sotu <- readLines("stateoftheunion1790-2012.txt", encoding = "UTF-8")
